@@ -8,6 +8,7 @@ import ServicesPage from '../pages/ServicesPage';
 import ContactPage from '../pages/ContactPage';
 import NativeGeolocationPage from '../pages/NativeGeolocationPage';
 import RouteErrorPage from '../pages/RouteErrorPage';
+import MeetingPage from '../pages/MeetingPage';
 import {
   dashboardLoader,
   loginAction,
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
       {
         path: '/native-geolocation',
         element: <NativeGeolocationPage />,
+      },
+      {
+        path: '/meeting',
+        element: <MeetingPage />,
       },
     ],
   },

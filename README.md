@@ -129,3 +129,61 @@ After these changes, top/bottom UI spacing behaves correctly on notch/cutout dev
 
 - iOS setup requires CocoaPods installed on local machine.
 - If adding new Capacitor plugins, run `npm run cap:sync` after installation.
+
+## Hostinger Deployment (Shared Hosting)
+
+This project is ready for Hostinger shared hosting with React Router refresh support via:
+
+- [`public/.htaccess`](./public/.htaccess)
+
+### Deploy to domain root (`public_html`)
+
+1. Build the app:
+
+```bash
+npm run build
+```
+
+2. Upload the **contents** of `dist/` into `public_html`:
+
+- `index.html`
+- `.htaccess`
+- `assets/`
+- other static files
+
+3. If Hostinger cache/CDN is enabled, clear cache.
+
+4. Validate:
+
+- Open `/meeting` directly
+- Hard refresh on `/profile`, `/dashboard`, `/contact`
+- Confirm routes still load correctly
+
+### Deploy to a subfolder (example: `https://domain.com/app/`)
+
+1. Set Vite base in `vite.config.js`:
+
+```js
+export default defineConfig({
+  base: '/app/',
+  plugins: [react(), tailwindcss()],
+})
+```
+
+2. In `.htaccess`, update:
+
+- `RewriteBase /app/`
+
+3. Build and upload `dist/` contents into `public_html/app/`.
+
+### WebRTC + permission requirements in production
+
+- HTTPS is required for camera/microphone access (except localhost).
+- Enable SSL on Hostinger before testing meeting calls.
+- Users must allow camera and microphone permissions for your domain.
+
+### Troubleshooting on shared hosting
+
+- If refresh shows 404: confirm `.htaccess` exists in deployed root and `mod_rewrite` is enabled.
+- If JS/CSS 404 in subfolder deploy: verify `base` in `vite.config.js` matches subfolder path.
+- If meeting join hangs on permission request: check browser site permissions and reload.

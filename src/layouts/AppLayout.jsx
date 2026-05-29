@@ -9,6 +9,7 @@ import {
   FiLogOut,
   FiMail,
   FiMenu,
+  FiVideo,
   FiUser,
   FiX,
 } from 'react-icons/fi';
@@ -41,7 +42,8 @@ export default function AppLayout() {
   const isDrawerActive =
     location.pathname === '/services' ||
     location.pathname === '/contact' ||
-    location.pathname === '/native-geolocation';
+    location.pathname === '/native-geolocation' ||
+    location.pathname === '/meeting';
 
   useEffect(() => {
     const notice = window.sessionStorage.getItem('login_success_notice');
@@ -131,6 +133,9 @@ export default function AppLayout() {
             <NavLink to="/native-geolocation" className={desktopNavItemClass}>
               <FiCompass size={16} /> Native APIs
             </NavLink>
+            <NavLink to="/meeting" className={desktopNavItemClass}>
+              <FiVideo size={16} /> Meeting
+            </NavLink>
             <fetcher.Form method="post" action="/logout">
               <button
                 type="submit"
@@ -211,6 +216,16 @@ export default function AppLayout() {
             }
           >
             <FiCompass size={16} /> Native APIs
+          </NavLink>
+          <NavLink
+            to="/meeting"
+            className={({ isActive }) =>
+              `mt-1 flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium ${
+                isActive ? 'bg-blue-50 text-blue-700' : 'text-slate-700 hover:bg-slate-100'
+              }`
+            }
+          >
+            <FiVideo size={16} /> Meeting
           </NavLink>
         </div>
 
