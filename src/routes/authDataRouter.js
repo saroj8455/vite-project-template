@@ -2,11 +2,28 @@ import { json, redirect } from 'react-router-dom';
 import { clearAuthState, getAuthState, setAuthState } from '../lib/storage';
 import { getCurrentUser, login as loginRequest } from '../services/authService';
 
+const APP_BASE = import.meta.env.BASE_URL || '/';
+
+function stripBaseFromPath(pathname) {
+  if (!pathname || APP_BASE === '/') return pathname || '/';
+
+  const normalizedBase = APP_BASE.endsWith('/') ? APP_BASE.slice(0, -1) : APP_BASE;
+  if (pathname === normalizedBase) return '/';
+  if (pathname.startsWith(`${normalizedBase}/`)) {
+    return pathname.slice(normalizedBase.length) || '/';
+  }
+  return pathname;
+}
+
 function normalizeRedirectTo(value) {
   if (typeof value !== 'string') return '/dashboard';
-  if (!value.startsWith('/')) return '/dashboard';
-  if (value.startsWith('//')) return '/dashboard';
-  return value;
+  let next = value;
+
+  if (!next.startsWith('/')) return '/dashboard';
+  if (next.startsWith('//')) return '/dashboard';
+
+  next = stripBaseFromPath(next);
+  return next || '/dashboard';
 }
 
 export async function loginLoader() {
@@ -70,7 +87,7 @@ export async function loginAction({ request }) {
 export async function protectedLoader({ request }) {
   const authState = getAuthState();
   if (!authState?.accessToken) {
-    const currentPath = new URL(request.url).pathname;
+    const currentPath = stripBaseFromPath(new URL(request.url).pathname);
     return redirect(`/login?redirectTo=${encodeURIComponent(currentPath)}`);
   }
 

@@ -3,7 +3,7 @@
 # ------------------------------
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteBase /
+  RewriteBase /meetv1/
 
   # Don't rewrite existing files/directories
   RewriteCond %{REQUEST_FILENAME} -f [OR]
@@ -11,7 +11,7 @@
   RewriteRule ^ - [L]
 
   # Route everything else to index.html
-  RewriteRule . /index.html [L]
+  RewriteRule . /meetv1/index.html [L]
 </IfModule>
 
 # ------------------------------

@@ -71,6 +71,8 @@ const router = createBrowserRouter([
     element: <NotFoundPage />,
     errorElement: <RouteErrorPage />,
   },
-]);
+], {
+  basename: import.meta.env.BASE_URL,
+});
 
 export default router;
