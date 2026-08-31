@@ -6,6 +6,9 @@ import router from './routes/router';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <RouterProvider  future={{
+    v7_startTransition: true,
+  }}
+   router={router} />
   </StrictMode>,
 );

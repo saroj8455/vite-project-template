@@ -4,15 +4,16 @@ export default function ProfilePage() {
   const { user } = useRouteLoaderData('app');
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-      <h1 className="text-2xl font-bold text-slate-900">Profile</h1>
-      <p className="mt-2 text-sm text-slate-600">Your account information from DummyJSON auth API.</p>
+    <section>
+      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-teal-700">Account</p>
+      <h1 className="mt-2 text-3xl font-bold text-slate-900">Profile</h1>
+      <p className="mt-2 text-sm text-slate-600">Your account information managed by the React Meet server.</p>
 
-      <div className="mt-6 flex flex-col gap-6 sm:flex-row sm:items-center">
+      <div className="soft-card mt-8 flex flex-col gap-6 rounded-3xl p-5 sm:flex-row sm:items-center sm:p-7">
         <img
           src={user?.image}
           alt={user?.username}
-          className="h-24 w-24 rounded-full border border-slate-200 object-cover"
+          className="h-24 w-24 rounded-full ring-4 ring-teal-100 object-cover"
         />
 
         <div className="grid flex-1 grid-cols-1 gap-4 sm:grid-cols-2">

@@ -4,8 +4,8 @@ Production-style React app with authentication, protected routing, responsive mo
 
 ## Features
 
-- Auth flow with DummyJSON API (`/auth/login`, `/auth/me`, `/auth/refresh`)
-- Axios setup with token injection and refresh handling
+- Secure API-owned auth with HttpOnly cookies and a cross-site bearer-token fallback
+- Axios setup with credential and bearer-token handling
 - React Router Data APIs (`loader`, `action`, `errorElement`)
 - Protected app shell with login/logout
 - Pages:
@@ -46,6 +46,7 @@ npm run dev
 ## Web Commands
 
 - `npm run dev` - start development server
+- `npm run dev:remote-api` - start only Vite and proxy `/api` to `VITE_API_PROXY_TARGET`
 - `npm run build` - production build
 - `npm run preview` - preview production build
 
@@ -130,51 +131,61 @@ After these changes, top/bottom UI spacing behaves correctly on notch/cutout dev
 - iOS setup requires CocoaPods installed on local machine.
 - If adding new Capacitor plugins, run `npm run cap:sync` after installation.
 
-## Hostinger Deployment (Shared Hosting)
+## Separate Hostinger Deployments
 
-This project is ready for Hostinger shared hosting with React Router refresh support via:
+Deploy the frontend and backend independently. The frontend is a static Vite build; the backend is a Hostinger Node.js Web App. They communicate over HTTPS through the backend's public API domain.
 
-- [`public/.htaccess`](./public/.htaccess)
+### Current frontend: `connectedarchdemo.digital/meetv1`
 
-### Deploy to domain root (`public_html`)
-
-1. Build the app:
+1. Build against the deployed API:
 
 ```bash
-npm run build
+VITE_API_BASE_URL=https://mobile.devapihub.cloud/vzom/api npm run build
 ```
 
-2. Upload the **contents** of `dist/` into `public_html`:
+2. Upload the contents of `dist/` to `public_html/meetv1/`.
+3. Keep the generated `dist/.htaccess`; it enables React Router refreshes under `/meetv1/`.
+4. Hard-refresh or use an incognito window after deployment to avoid an old cached asset bundle.
 
-- `index.html`
-- `.htaccess`
-- `assets/`
-- other static files
+The included `.htaccess` adds SPA fallback, HTTPS/HSTS, CSP, frame protection, MIME protection, and camera/microphone permissions. If the API host changes, add the new HTTPS API origin to its `connect-src` directive before rebuilding.
 
-3. If Hostinger cache/CDN is enabled, clear cache.
+### Current backend: `mobile.devapihub.cloud/vzom`
 
-4. Validate:
+1. Create a Hostinger Node.js Web App for the API path or subdomain.
+2. Upload the contents of `backend/` so `package.json`, `.env`, and `src/` sit directly inside Hostinger's `nodejs/` directory.
+3. Set Start command to `npm start` and Node version to `22.x`.
+4. Add the following environment variables in Hostinger's Environment variables panel:
 
-- Open `/meeting` directly
-- Hard refresh on `/profile`, `/dashboard`, `/contact`
-- Confirm routes still load correctly
-
-### Deploy to a subfolder (example: `https://domain.com/app/`)
-
-1. Set Vite base in `vite.config.js`:
-
-```js
-export default defineConfig({
-  base: '/app/',
-  plugins: [react(), tailwindcss()],
-})
+```env
+NODE_ENV=production
+MONGODB_URI=your-mongodb-connection-string
+JWT_SECRET=at-least-32-random-characters
+CLIENT_ORIGIN=https://connectedarchdemo.digital,capacitor://localhost,http://localhost
+APP_URL=https://connectedarchdemo.digital/meetv1
+COOKIE_SECURE=true
+COOKIE_SAME_SITE=none
+SMTP_HOST=smtp.hostinger.com
+SMTP_PORT=465
+SMTP_SECURE=true
+SMTP_USER=no-reply@your-domain.com
+SMTP_PASS=your-mailbox-password
+MAIL_FROM="React Meet <no-reply@your-domain.com>"
 ```
 
-2. In `.htaccess`, update:
+Do not add `PORT`; Hostinger supplies it. After deployment, verify `https://mobile.devapihub.cloud/vzom/api/health`, then open `https://connectedarchdemo.digital/meetv1/`.
 
-- `RewriteBase /app/`
+### Cross-site authentication
 
-3. Build and upload `dist/` contents into `public_html/app/`.
+The deployed frontend and API use different parent domains. Some browsers block their cross-site HttpOnly cookie, even with `SameSite=None; Secure`. To remain compatible, successful login returns a short-lived bearer token that the frontend keeps in `sessionStorage` for the current browser tab and sends in the `Authorization` header. The API continues to prefer the HttpOnly cookie when it is available.
+
+- Browser sessions use tab-scoped storage only; closing the tab clears the fallback token.
+- Capacitor apps should persist the token with native secure storage, not browser storage.
+- Keep `CLIENT_ORIGIN` limited to deployed web and native origins. Put Vite localhost origins only in a development/staging API environment.
+- The strongest long-term browser setup is `https://api.connectedarchdemo.digital`, which makes the API same-site with the frontend and avoids third-party-cookie restrictions.
+
+### WebRTC signaling
+
+Meeting signaling is handled by the application's authenticated WebSocket endpoint rather than public relay services. The frontend connects to `/ws/meetings` beside the configured API base, and the API permits only admitted participants to join a signaling room. Hostinger must support WebSocket upgrades for the Node.js Web App. For dependable meetings across corporate networks and mobile carriers, configure a TURN service using `VITE_ICE_SERVERS` before building.
 
 ### WebRTC + permission requirements in production
 
@@ -182,8 +193,8 @@ export default defineConfig({
 - Enable SSL on Hostinger before testing meeting calls.
 - Users must allow camera and microphone permissions for your domain.
 
-### Troubleshooting on shared hosting
+### Troubleshooting
 
-- If refresh shows 404: confirm `.htaccess` exists in deployed root and `mod_rewrite` is enabled.
-- If JS/CSS 404 in subfolder deploy: verify `base` in `vite.config.js` matches subfolder path.
+- If the backend returns `503`, confirm its deployed root is `backend`, its start command is `npm start`, and no `PORT` variable is overriding the hosting platform's assigned port.
+- If login succeeds but `/api/auth/me` returns `401`, inspect the API request logs. `hasSessionCookie: false` and `hasBearerToken: true` means the cross-site fallback is working; both false means the frontend was not rebuilt with the latest bearer-token support.
 - If meeting join hangs on permission request: check browser site permissions and reload.

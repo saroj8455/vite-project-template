@@ -1,6 +1,6 @@
 import { json, redirect } from 'react-router-dom';
-import { clearAuthState, getAuthState, setAuthState } from '../lib/storage';
-import { getCurrentUser, login as loginRequest } from '../services/authService';
+import { clearAuthState } from '../lib/storage';
+import { getCurrentUser, login as loginRequest, logout } from '../services/authService';
 
 const APP_BASE = import.meta.env.BASE_URL || '/';
 
@@ -26,17 +26,12 @@ function normalizeRedirectTo(value) {
   return next || '/dashboard';
 }
 
-export async function loginLoader() {
-  const authState = getAuthState();
-  if (!authState?.accessToken) {
-    return null;
-  }
-
+export async function loginLoader({ request }) {
   try {
-    await getCurrentUser(authState.accessToken);
-    return redirect('/dashboard');
+    await getCurrentUser();
+    const redirectTo = normalizeRedirectTo(new URL(request.url).searchParams.get('redirectTo'));
+    return redirect(redirectTo);
   } catch {
-    clearAuthState();
     return null;
   }
 }
@@ -52,26 +47,10 @@ export async function loginAction({ request }) {
   }
 
   try {
-    const data = await loginRequest({
+    await loginRequest({
       username,
       password,
-      expiresInMins: 60,
     });
-
-    const authState = {
-      accessToken: data.accessToken,
-      refreshToken: data.refreshToken,
-      user: {
-        id: data.id,
-        username: data.username,
-        email: data.email,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        image: data.image,
-      },
-    };
-
-    setAuthState(authState);
     if (typeof window !== 'undefined') {
       window.sessionStorage.setItem('login_success_notice', '1');
     }
@@ -85,18 +64,14 @@ export async function loginAction({ request }) {
 }
 
 export async function protectedLoader({ request }) {
-  const authState = getAuthState();
-  if (!authState?.accessToken) {
-    const currentPath = stripBaseFromPath(new URL(request.url).pathname);
-    return redirect(`/login?redirectTo=${encodeURIComponent(currentPath)}`);
-  }
-
   try {
-    const user = await getCurrentUser(authState.accessToken);
+    const user = await getCurrentUser();
     return { user };
   } catch {
     clearAuthState();
-    return redirect('/login');
+    const url = new URL(request.url);
+    const currentPath = `${stripBaseFromPath(url.pathname)}${url.search}`;
+    return redirect(`/login?redirectTo=${encodeURIComponent(currentPath)}`);
   }
 }
 
@@ -107,6 +82,11 @@ export function dashboardLoader() {
 }
 
 export async function logoutAction() {
+  try {
+    await logout();
+  } catch {
+    // The client should still complete logout when an expired cookie is rejected.
+  }
   clearAuthState();
   return redirect('/login');
 }

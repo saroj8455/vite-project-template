@@ -1,0 +1,26 @@
+{
+  "name": "react-meet-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node src/server.js",
+    "start": "node src/server.js",
+    "seed:users": "node src/scripts/seedDummyUsers.js",
+    "migrate:auth": "node src/scripts/migrateUserIndexes.js"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.7.0",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^8.24.4",
+    "nodemailer": "^9.0.6",
+    "ws": "^8.21.3",
+    "zod": "^4.5.4"
+  }
+}

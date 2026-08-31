@@ -2,6 +2,10 @@ import { Navigate, createBrowserRouter } from 'react-router-dom';
 import AppLayout from '../layouts/AppLayout';
 import DashboardPage from '../pages/DashboardPage';
 import LoginPage from '../pages/LoginPage';
+import RegisterPage from '../pages/RegisterPage';
+import ForgotPasswordPage from '../pages/ForgotPasswordPage';
+import ResetPasswordPage from '../pages/ResetPasswordPage';
+import VerifyEmailPage from '../pages/VerifyEmailPage';
 import NotFoundPage from '../pages/NotFoundPage';
 import ProfilePage from '../pages/ProfilePage';
 import ServicesPage from '../pages/ServicesPage';
@@ -24,6 +28,22 @@ const router = createBrowserRouter([
     loader: loginLoader,
     action: loginAction,
     errorElement: <RouteErrorPage />,
+  },
+  {
+    path: '/register',
+    element: <RegisterPage />,
+  },
+  {
+    path: '/forgot-password',
+    element: <ForgotPasswordPage />,
+  },
+  {
+    path: '/reset-password',
+    element: <ResetPasswordPage />,
+  },
+  {
+    path: '/verify-email',
+    element: <VerifyEmailPage />,
   },
   {
     path: '/logout',
@@ -62,6 +82,10 @@ const router = createBrowserRouter([
       },
       {
         path: '/meeting',
+        element: <MeetingPage />,
+      },
+      {
+        path: '/meeting/:code',
         element: <MeetingPage />,
       },
     ],

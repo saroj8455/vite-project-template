@@ -135,11 +135,12 @@ export default function AnalyticsCharts() {
   }, [labels]);
 
   return (
-    <div className="mt-6 grid gap-4 lg:grid-cols-2">
-      <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
+    <div className="mt-7 grid gap-5 lg:grid-cols-2">
+      <article className="soft-card rounded-2xl p-5 sm:p-6">
         <div className="mb-4 flex items-center justify-between gap-3">
           <div>
-            <h2 className="text-lg font-bold text-slate-900">4167 Search appearances in last 7 days</h2>
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-400">Discovery</p>
+            <h2 className="mt-1 text-lg font-extrabold text-slate-950">Search appearances</h2>
             <p className="mt-1 inline-flex items-center gap-1 text-sm text-rose-500">
               <FiTrendingDown /> 27% since last week
             </p>
@@ -150,10 +151,11 @@ export default function AnalyticsCharts() {
         </div>
       </article>
 
-      <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
+      <article className="soft-card rounded-2xl p-5 sm:p-6">
         <div className="mb-4 flex items-center justify-between gap-3">
           <div>
-            <h2 className="text-lg font-bold text-slate-900">Recruiter actions trend in last 7 days</h2>
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-400">Engagement</p>
+            <h2 className="mt-1 text-lg font-extrabold text-slate-950">Recruiter actions</h2>
             <p className="mt-1 inline-flex items-center gap-1 text-sm text-emerald-600">
               <FiTrendingUp /> 14% better than last week
             </p>

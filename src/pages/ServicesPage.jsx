@@ -9,15 +9,16 @@ const services = [
 export default function ServicesPage() {
   return (
     <section>
-      <h1 className="text-2xl font-bold text-slate-900">Services</h1>
+      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-teal-700">Workspace</p>
+      <h1 className="mt-2 text-3xl font-bold text-slate-900">Services</h1>
       <p className="mt-2 text-sm text-slate-600">Explore platform services built for your growth.</p>
 
       <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {services.map((service) => {
           const Icon = service.icon;
           return (
-            <article key={service.title} className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-              <Icon className="text-blue-600" size={20} />
+            <article key={service.title} className="soft-card rounded-3xl p-6 transition duration-200 hover:-translate-y-1">
+              <span className="inline-flex rounded-2xl bg-teal-50 p-3 text-teal-700"><Icon size={20} /></span>
               <h2 className="mt-3 text-lg font-semibold text-slate-900">{service.title}</h2>
               <p className="mt-2 text-sm text-slate-600">{service.description}</p>
             </article>

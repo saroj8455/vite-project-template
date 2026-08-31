@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Form, useActionData, useNavigation, useSearchParams } from 'react-router-dom';
+import { Form, Link, useActionData, useNavigation, useSearchParams } from 'react-router-dom';
 import { FiEye, FiEyeOff, FiLock, FiUser } from 'react-icons/fi';
 
 export default function LoginPage() {
@@ -66,6 +66,10 @@ export default function LoginPage() {
             {isSubmitting ? 'Signing in...' : 'Sign In'}
           </button>
         </Form>
+        <div className="mt-5 flex items-center justify-between text-sm">
+          <Link to="/forgot-password" className="font-medium text-blue-600 hover:text-blue-700">Forgot password?</Link>
+          <Link to="/register" className="font-medium text-blue-600 hover:text-blue-700">Create account</Link>
+        </div>
       </div>
     </div>
   );

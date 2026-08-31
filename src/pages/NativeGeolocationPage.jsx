@@ -37,17 +37,19 @@ export default function NativeGeolocationPage() {
   };
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-      <h1 className="text-2xl font-bold text-slate-900">Adding Calls to Native APIs</h1>
+    <section>
+      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-teal-700">Device tools</p>
+      <h1 className="mt-2 text-3xl font-bold text-slate-900">Native location</h1>
       <p className="mt-2 text-sm text-slate-600">
         This page uses <code>@capacitor/geolocation@7</code> to request location from the native layer.
       </p>
 
-      <div className="mt-4 rounded-lg border border-blue-100 bg-blue-50 p-4 text-sm text-blue-700">
+      <div className="mt-5 text-sm text-teal-800">
         Platform: <span className="font-semibold">{Capacitor.getPlatform()}</span>
       </div>
 
-      <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+      <div className="soft-card mt-8 rounded-3xl p-5 sm:p-7">
+      <div className="flex flex-col gap-3 sm:flex-row">
         <button
           type="button"
           onClick={requestPermission}
@@ -66,11 +68,11 @@ export default function NativeGeolocationPage() {
       </div>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
-        <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
+        <div className="rounded-2xl bg-slate-100/70 p-4">
           <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Permission</p>
           <p className="mt-1 text-base font-semibold text-slate-900">{permissionState}</p>
         </div>
-        <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
+        <div className="rounded-2xl bg-slate-100/70 p-4">
           <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Latitude / Longitude</p>
           <p className="mt-1 break-all text-base font-semibold text-slate-900">
             {position
@@ -81,12 +83,13 @@ export default function NativeGeolocationPage() {
       </div>
 
       {position ? (
-        <div className="mt-4 rounded-lg border border-emerald-100 bg-emerald-50 p-4 text-sm text-emerald-700">
+        <div className="mt-4 rounded-2xl bg-emerald-50 p-4 text-sm text-emerald-700">
           Accuracy: {Math.round(position.coords.accuracy)} meters
         </div>
       ) : null}
 
       {error ? <p className="mt-4 text-sm font-medium text-rose-600">{error}</p> : null}
+      </div>
     </section>
   );
 }

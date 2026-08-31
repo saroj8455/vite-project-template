@@ -1,10 +1,67 @@
 @import "tailwindcss";
 
 :root {
+  color: #172033;
+  font-family: "Manrope", "Segoe UI", sans-serif;
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-right: env(safe-area-inset-right, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-left: env(safe-area-inset-left, 0px);
+}
+
+body {
+  background: #f6f7fb;
+}
+
+h1, h2, h3 {
+  font-family: "Manrope", "Segoe UI", sans-serif;
+  letter-spacing: -0.045em;
+}
+
+.material-symbols-rounded {
+  font-family: 'Material Symbols Rounded';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 1.25rem;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  direction: ltr;
+  font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: #bfe4dc;
+  color: #172033;
+}
+
+.app-shell {
+  background: radial-gradient(circle at 85% -20%, rgb(224 231 255 / 0.8), transparent 32rem), #f6f7fb;
+}
+
+.app-header {
+  background: rgb(255 255 255 / 0.76);
+  backdrop-filter: blur(18px);
+}
+
+.page-context {
+  border-left: 3px solid #0f766e;
+}
+
+.soft-card {
+  background: #fff;
+  border: 1px solid rgb(226 232 240 / 0.8);
+  box-shadow: 0 18px 38px -32px rgb(15 23 42 / 0.45);
+}
+
+.product-sidebar {
+  color: white;
+  background:
+    radial-gradient(circle at 20% 5%, rgb(99 102 241 / 0.38), transparent 18rem),
+    linear-gradient(165deg, #11172a 0%, #10172b 48%, #182141 100%);
 }
 
 html,

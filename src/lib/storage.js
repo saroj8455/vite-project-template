@@ -1,4 +1,5 @@
 const AUTH_STORAGE_KEY = 'auth_state_v1';
+const SESSION_ACCESS_TOKEN_KEY = 'meet_access_token_v1';
 
 export function getAuthState() {
   try {
@@ -15,4 +16,13 @@ export function setAuthState(authState) {
 
 export function clearAuthState() {
   localStorage.removeItem(AUTH_STORAGE_KEY);
+  sessionStorage.removeItem(SESSION_ACCESS_TOKEN_KEY);
+}
+
+export function getSessionAccessToken() {
+  return sessionStorage.getItem(SESSION_ACCESS_TOKEN_KEY);
+}
+
+export function setSessionAccessToken(accessToken) {
+  if (accessToken) sessionStorage.setItem(SESSION_ACCESS_TOKEN_KEY, accessToken);
 }
