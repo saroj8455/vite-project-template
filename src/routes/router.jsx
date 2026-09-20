@@ -13,6 +13,7 @@ import ContactPage from '../pages/ContactPage';
 import NativeGeolocationPage from '../pages/NativeGeolocationPage';
 import RouteErrorPage from '../pages/RouteErrorPage';
 import MeetingPage from '../pages/MeetingPage';
+import RecipeDocumentPage from '../pages/RecipeDocumentPage';
 import {
   dashboardLoader,
   loginAction,
@@ -87,6 +88,10 @@ const router = createBrowserRouter([
       {
         path: '/meeting/:code',
         element: <MeetingPage />,
+      },
+      {
+        path: '/recipe-documents',
+        element: <RecipeDocumentPage />,
       },
     ],
   },

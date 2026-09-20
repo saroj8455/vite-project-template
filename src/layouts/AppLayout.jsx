@@ -12,6 +12,7 @@ const secondaryNav = [
   { to: '/services', label: 'Services', icon: 'grid_view' },
   { to: '/contact', label: 'Support', icon: 'support_agent' },
   { to: '/native-geolocation', label: 'Native tools', icon: 'explore' },
+  { to: '/recipe-documents', label: 'Recipe documents', icon: 'menu_book' },
 ];
 
 const navClass = ({ isActive }) =>
